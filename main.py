@@ -73,10 +73,13 @@ def next_board_state(board):
     #First and Last Row
     for i in range(0,height,height-1): #First and last row 
         for j in range(1,width-1):
-            if j == 1: #First Row
-                count = sum([board[i-1][j], board[i+1][j], board[i][j+1], board[i-1][j+1], board[i+1][j+1]])
+            if i == 0: #First Row
+                print(height)
+                print(width)
+                print( f"Row:{i}, Col:{j}" )
+                count = sum([ board[i][j-1], board[i][j+1], board[i+1][j] ])#, board[i+1][j-1], board[i+1][j+1] ])
             else: #Last Row
-                count = sum([board[i-1][j], board[i][j-1], board[i+1][j], board[i-1][j-1], board[i+1][j-1]])
+                count = sum([board[i][j-1], board[i-1][j], board[i][j+1], board[i-1][j-1], board[i-1][j+1]])
             out_board = find_state(board[i][j], count)
 
     #First and Last Column
@@ -119,10 +122,10 @@ def main():
     # print(dead_state(height,width, 0.1))
     board = random_state2(height, width, 0.1)
 
-    
+
     # print(board)
     render(board)
-    # board = next_board_state(board)
+    board = next_board_state(board)
     render(board)
     print("Done")
 
