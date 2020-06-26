@@ -32,7 +32,7 @@ def dead_state(width,height):
     board_state = [[0 for i in range(width)] for j in range(height)]  
     return board_state
 
-def render(board):
+def render(board, alive = "#", dead = " "):
     out_string = ""
     height = len(board)
     width = len(board[0])
@@ -40,9 +40,9 @@ def render(board):
         out_string += "|"
         for j in range(width):
             if board[i][j] == 0:
-                out_string += " "
+                out_string += dead
             else:
-                out_string += TGREEN + "#" + ENDC
+                out_string += TGREEN + alive + ENDC
         out_string += "|\n"
     print(out_string)
 
@@ -54,7 +54,7 @@ def sys_render(board):
         out_string += "|"
         for j in range(width):
             if board[i][j] == 0:
-                out_string += " "
+                out_string += "0"
             else:
                 out_string += TGREEN + "#" + ENDC
         out_string += "|\n"
@@ -90,17 +90,17 @@ def next_board_state(board):
 
     #First and Last Row
     for i in range(0,height,height-1): #First and last row 
-        for j in range(1,width-1):
+        for j in range(1,width-1): #along the columns
             if i == 0: #First Row
                 count = sum([ board[i][j-1], board[i][j+1], board[i+1][j] ])#, board[i+1][j-1], board[i+1][j+1] ])
             else: #Last Row
-                count = sum([board[i][j-1], board[i-1][j], board[i][j+1], board[i-1][j-1], board[i-1][j+1]])
+                count = sum([ board[i][j-1], board[i-1][j], board[i][j+1], board[i-1][j-1], board[i-1][j+1]])
             out_board[i][j] = find_state(board[i][j], count) #Update Board
     
     #First and Last Column
     for j in range(0,width, width-1): #First and Last Column
         for i in range(1,height-1): #Traverse down the Columns
-            if j == 1:
+            if j == 0:
                 count = sum([ board[i-1][j], board[i+1][j], board[i][j+1], board[i-1][j+1], board[i+1][j+1] ])    
             else:
                 count = sum([ board[i-1][j], board[i+1][j], board[i][j-1], board[i-1][j-1], board[i+1][j-1] ])
@@ -141,10 +141,10 @@ toad = [[0,0,0,0,0,0],
 
 def test1():
     test1 =[[1,1,0,0,1],[0,1,1,0,0],[0,1,0,0,1],[1,1,0,1,0],[1,1,1,1,1]]
-    render(test1)
-    print(" ")
-    test1 = next_board_state(test1)
-    render(test1)
+    while True:
+        render(test1)
+        test1 = next_board_state(test1)
+        time.sleep(0.2)
 
 
 
